@@ -133,19 +133,40 @@
       <div class="text-xs text-gray-500 mb-3">여행을 가기 전 사용하던 본국 통화입니다</div>
       <select id="homeCurrency" class="w-full px-3 sm:px-4 py-3 sm:py-3.5 text-base sm:text-lg border-2 border-indigo-500 rounded-lg font-semibold text-gray-800 bg-white cursor-pointer focus:outline-none focus:border-indigo-600 transition-colors">
         <option value="USD">USD 🇺🇸</option>
-        <option value="KRW" selected>KRW 🇰🇷</option>
         <option value="EUR">EUR 🇪🇺</option>
-        <option value="JPY">JPY 🇯🇵</option>
         <option value="GBP">GBP 🇬🇧</option>
+        <option value="JPY">JPY 🇯🇵</option>
+        <option value="KRW" selected>KRW 🇰🇷</option>
         <option value="CNY">CNY 🇨🇳</option>
+        <option value="INR">INR 🇮🇳</option>
+        <option value="PHP">PHP 🇵🇭</option>
+        <option value="THB">THB 🇹🇭</option>
+        <option value="VND">VND 🇻🇳</option>
+        <option value="MYR">MYR 🇲🇾</option>
+        <option value="IDR">IDR 🇮🇩</option>
+        <option value="SGD">SGD 🇸🇬</option>
+        <option value="HKD">HKD 🇭🇰</option>
         <option value="AUD">AUD 🇦🇺</option>
+        <option value="NZD">NZD 🇳🇿</option>
         <option value="CAD">CAD 🇨🇦</option>
         <option value="CHF">CHF 🇨🇭</option>
         <option value="SEK">SEK 🇸🇪</option>
+        <option value="NOK">NOK 🇳🇴</option>
+        <option value="DKK">DKK 🇩🇰</option>
         <option value="MXN">MXN 🇲🇽</option>
-        <option value="SGD">SGD 🇸🇬</option>
-        <option value="HKD">HKD 🇭🇰</option>
-        <option value="NZD">NZD 🇳🇿</option>
+        <option value="BRL">BRL 🇧🇷</option>
+        <option value="TRY">TRY 🇹🇷</option>
+        <option value="RUB">RUB 🇷🇺</option>
+        <option value="ZAR">ZAR 🇿🇦</option>
+        <option value="SAR">SAR 🇸🇦</option>
+        <option value="AED">AED 🇦🇪</option>
+        <option value="ILS">ILS 🇮🇱</option>
+        <option value="PLN">PLN 🇵🇱</option>
+        <option value="CZK">CZK 🇨🇿</option>
+        <option value="HUF">HUF 🇭🇺</option>
+        <option value="RON">RON 🇷🇴</option>
+        <option value="ARS">ARS 🇦🇷</option>
+        <option value="EGP">EGP 🇪🇬</option>
       </select>
     </div>
 
@@ -154,23 +175,44 @@
       <!-- From Amount -->
       <div class="mb-4 sm:mb-4">
         <label for="fromAmount" class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">현지 금액</label>
-        <div class="flex gap-0.5 sm:gap-3">
+        <div class="flex gap-1 sm:gap-2 md:gap-3">
           <input type="text" id="fromAmount" class="amount-input flex-1 px-1.5 sm:px-4 py-3 sm:py-3.5 text-sm sm:text-lg border-2 border-gray-300 rounded-lg text-right font-mono focus:outline-none focus:border-indigo-500 transition-colors h-11 sm:h-12" placeholder="금액 입력" value="1">
-          <select id="fromCurrency" class="px-1 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-lg border-2 border-gray-300 rounded-lg font-semibold text-gray-800 bg-white cursor-pointer focus:outline-none focus:border-indigo-500 transition-colors min-w-[45px] sm:min-w-[100px] flex-shrink-0 h-11 sm:h-12">
+          <select id="fromCurrency" class="px-1 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-lg border-2 border-gray-300 rounded-lg font-semibold text-gray-800 bg-white cursor-pointer focus:outline-none focus:border-indigo-500 transition-colors min-w-[60px] sm:min-w-[100px] md:min-w-[110px] flex-shrink-0 h-11 sm:h-12">
             <option value="USD">USD 🇺🇸</option>
-            <option value="KRW">KRW 🇰🇷</option>
             <option value="EUR">EUR 🇪🇺</option>
-            <option value="JPY">JPY 🇯🇵</option>
             <option value="GBP">GBP 🇬🇧</option>
+            <option value="JPY">JPY 🇯🇵</option>
+            <option value="KRW">KRW 🇰🇷</option>
             <option value="CNY">CNY 🇨🇳</option>
+            <option value="INR">INR 🇮🇳</option>
+            <option value="PHP">PHP 🇵🇭</option>
+            <option value="THB">THB 🇹🇭</option>
+            <option value="VND">VND 🇻🇳</option>
+            <option value="MYR">MYR 🇲🇾</option>
+            <option value="IDR">IDR 🇮🇩</option>
+            <option value="SGD">SGD 🇸🇬</option>
+            <option value="HKD">HKD 🇭🇰</option>
             <option value="AUD">AUD 🇦🇺</option>
+            <option value="NZD">NZD 🇳🇿</option>
             <option value="CAD">CAD 🇨🇦</option>
             <option value="CHF">CHF 🇨🇭</option>
             <option value="SEK">SEK 🇸🇪</option>
+            <option value="NOK">NOK 🇳🇴</option>
+            <option value="DKK">DKK 🇩🇰</option>
             <option value="MXN">MXN 🇲🇽</option>
-            <option value="SGD">SGD 🇸🇬</option>
-            <option value="HKD">HKD 🇭🇰</option>
-            <option value="NZD">NZD 🇳🇿</option>
+            <option value="BRL">BRL 🇧🇷</option>
+            <option value="TRY">TRY 🇹🇷</option>
+            <option value="RUB">RUB 🇷🇺</option>
+            <option value="ZAR">ZAR 🇿🇦</option>
+            <option value="SAR">SAR 🇸🇦</option>
+            <option value="AED">AED 🇦🇪</option>
+            <option value="ILS">ILS 🇮🇱</option>
+            <option value="PLN">PLN 🇵🇱</option>
+            <option value="CZK">CZK 🇨🇿</option>
+            <option value="HUF">HUF 🇭🇺</option>
+            <option value="RON">RON 🇷🇴</option>
+            <option value="ARS">ARS 🇦🇷</option>
+            <option value="EGP">EGP 🇪🇬</option>
           </select>
         </div>
       </div>
@@ -183,23 +225,44 @@
       <!-- To Amount -->
       <div>
         <label for="convertedAmount" class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">내 국가 금액 (환산 결과)</label>
-        <div class="flex gap-0.5 sm:gap-3">
+        <div class="flex gap-1 sm:gap-2 md:gap-3">
           <input type="text" id="convertedAmount" class="amount-input flex-1 px-1.5 sm:px-4 py-3 sm:py-3.5 text-sm sm:text-lg border-2 border-gray-300 rounded-lg text-right font-mono bg-gray-100 text-gray-700 font-semibold focus:outline-none focus:border-indigo-500 transition-colors h-11 sm:h-12" placeholder="환산 결과" readonly>
-          <select id="toCurrency" class="px-1 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-lg border-2 border-gray-300 rounded-lg font-semibold text-gray-800 bg-white cursor-pointer focus:outline-none focus:border-indigo-500 transition-colors min-w-[45px] sm:min-w-[100px] flex-shrink-0 h-11 sm:h-12">
+          <select id="toCurrency" class="px-1 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-lg border-2 border-gray-300 rounded-lg font-semibold text-gray-800 bg-white cursor-pointer focus:outline-none focus:border-indigo-500 transition-colors min-w-[60px] sm:min-w-[100px] md:min-w-[110px] flex-shrink-0 h-11 sm:h-12">
             <option value="KRW">KRW 🇰🇷</option>
             <option value="USD">USD 🇺🇸</option>
             <option value="EUR">EUR 🇪🇺</option>
-            <option value="JPY">JPY 🇯🇵</option>
             <option value="GBP">GBP 🇬🇧</option>
+            <option value="JPY">JPY 🇯🇵</option>
             <option value="CNY">CNY 🇨🇳</option>
+            <option value="INR">INR 🇮🇳</option>
+            <option value="PHP">PHP 🇵🇭</option>
+            <option value="THB">THB 🇹🇭</option>
+            <option value="VND">VND 🇻🇳</option>
+            <option value="MYR">MYR 🇲🇾</option>
+            <option value="IDR">IDR 🇮🇩</option>
+            <option value="SGD">SGD 🇸🇬</option>
+            <option value="HKD">HKD 🇭🇰</option>
             <option value="AUD">AUD 🇦🇺</option>
+            <option value="NZD">NZD 🇳🇿</option>
             <option value="CAD">CAD 🇨🇦</option>
             <option value="CHF">CHF 🇨🇭</option>
             <option value="SEK">SEK 🇸🇪</option>
+            <option value="NOK">NOK 🇳🇴</option>
+            <option value="DKK">DKK 🇩🇰</option>
             <option value="MXN">MXN 🇲🇽</option>
-            <option value="SGD">SGD 🇸🇬</option>
-            <option value="HKD">HKD 🇭🇰</option>
-            <option value="NZD">NZD 🇳🇿</option>
+            <option value="BRL">BRL 🇧🇷</option>
+            <option value="TRY">TRY 🇹🇷</option>
+            <option value="RUB">RUB 🇷🇺</option>
+            <option value="ZAR">ZAR 🇿🇦</option>
+            <option value="SAR">SAR 🇸🇦</option>
+            <option value="AED">AED 🇦🇪</option>
+            <option value="ILS">ILS 🇮🇱</option>
+            <option value="PLN">PLN 🇵🇱</option>
+            <option value="CZK">CZK 🇨🇿</option>
+            <option value="HUF">HUF 🇭🇺</option>
+            <option value="RON">RON 🇷🇴</option>
+            <option value="ARS">ARS 🇦🇷</option>
+            <option value="EGP">EGP 🇪🇬</option>
           </select>
         </div>
       </div>

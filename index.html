@@ -1,72 +1,145 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>여행자 환율 계산기</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .container {
+      animation: slideUp 0.5s ease-out;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #4caf50;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    input[type="text"].amount-input::-webkit-outer-spin-button,
+    input[type="text"].amount-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .location-btn {
+      @apply bg-white/20 text-white border border-white/30 px-3 py-1 text-xs sm:text-sm rounded transition-colors hover:bg-white/30 active:bg-white/40;
+    }
+
+    .location-btn.active {
+      @apply bg-white/40;
+    }
+  </style>
 </head>
-<body>
-<div class="container">
-  <div class="header">
-    <h1>💱 여행자 환율 계산기</h1>
-    <p>현위치의 통화와 내 국가 통화를 자동으로 비교하세요</p>
-  </div>
+<body class="min-h-screen bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center p-4 sm:p-6 font-sans">
+  <div class="container bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 sm:p-8 md:p-10 max-h-[95vh] overflow-y-auto">
+    <!-- Header -->
+    <div class="text-center mb-6 sm:mb-8">
+      <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-2">💱 여행자 환율 계산기</h1>
+      <p class="text-xs sm:text-sm text-gray-500">현위치의 통화와 내 국가 통화를 자동으로 비교하세요</p>
+    </div>
 
-  <div id="errorMessage" class="error-message" style="display: none;"></div>
-  <div id="warningMessage" class="warning-message" style="display: none;"></div>
+    <!-- Messages -->
+    <div id="errorMessage" style="display: none;" class="bg-red-100 text-red-700 px-4 sm:px-5 py-3 rounded-lg mb-4 text-sm sm:text-base border-l-4 border-red-700"></div>
+    <div id="warningMessage" style="display: none;" class="bg-yellow-50 text-yellow-800 px-4 sm:px-5 py-3 rounded-lg mb-4 text-xs sm:text-sm border-l-4 border-yellow-500"></div>
 
-  <!-- 위치 섹션 -->
-  <div class="location-section">
-    <div class="location-header">
-      <div class="location-title">
-        📍 현재 위치
+    <!-- Location Section -->
+    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-xl p-4 sm:p-5 md:p-6 mb-5 sm:mb-6">
+      <div class="flex items-center justify-between mb-4 sm:mb-5">
+        <div class="flex items-center gap-2">
+          <span>📍 현재 위치</span>
+        </div>
+        <div class="flex gap-2">
+          <button class="location-btn" id="updateLocationBtn" title="위치 업데이트">새로고침</button>
+          <button class="location-btn" id="autoLocationBtn" title="자동 갱신 토글">자동</button>
+        </div>
       </div>
-      <div class="location-controls">
-        <button class="location-btn" id="updateLocationBtn" title="위치 업데이트">새로고침</button>
-        <button class="location-btn" id="autoLocationBtn" title="자동 갱신 토글">자동</button>
+      <div id="locationInfo" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="bg-white/10 p-3 sm:p-4 rounded-lg border border-white/20">
+          <div class="text-xs opacity-80 mb-2">위치</div>
+          <div class="font-semibold text-sm sm:text-base" id="locationName">위치 감지 중...</div>
+        </div>
+        <div class="bg-white/10 p-3 sm:p-4 rounded-lg border border-white/20">
+          <div class="text-xs opacity-80 mb-2">현지 통화</div>
+          <div class="font-semibold text-sm sm:text-base" id="localCurrency">-</div>
+        </div>
       </div>
     </div>
-    <div id="locationInfo" class="location-info">
-      <div class="location-card">
-        <div class="location-card-label">위치</div>
-        <div class="location-card-value" id="locationName">위치 감지 중...</div>
-      </div>
-      <div class="location-card">
-        <div class="location-card-label">현지 통화</div>
-        <div class="location-card-value" id="localCurrency">-</div>
-      </div>
+
+    <!-- Home Currency Section -->
+    <div class="bg-blue-50 rounded-xl p-4 sm:p-5 mb-5 sm:mb-6 border-l-4 border-indigo-500">
+      <div class="text-xs sm:text-sm text-gray-600 font-semibold mb-2">🏠 나의 국가 통화</div>
+      <div class="text-xs text-gray-500 mb-3">여행을 가기 전 사용하던 본국 통화입니다</div>
+      <select id="homeCurrency" class="w-full px-3 sm:px-4 py-3 sm:py-3.5 text-base sm:text-lg border-2 border-indigo-500 rounded-lg font-semibold text-gray-800 bg-white cursor-pointer focus:outline-none focus:border-indigo-600 transition-colors">
+        <option value="USD">USD 🇺🇸</option>
+        <option value="KRW" selected>KRW 🇰🇷</option>
+        <option value="EUR">EUR 🇪🇺</option>
+        <option value="JPY">JPY 🇯🇵</option>
+        <option value="GBP">GBP 🇬🇧</option>
+        <option value="CNY">CNY 🇨🇳</option>
+        <option value="AUD">AUD 🇦🇺</option>
+        <option value="CAD">CAD 🇨🇦</option>
+        <option value="CHF">CHF 🇨🇭</option>
+        <option value="SEK">SEK 🇸🇪</option>
+        <option value="MXN">MXN 🇲🇽</option>
+        <option value="SGD">SGD 🇸🇬</option>
+        <option value="HKD">HKD 🇭🇰</option>
+        <option value="NZD">NZD 🇳🇿</option>
+      </select>
     </div>
-  </div>
 
-  <!-- 기본 통화 섹션 -->
-  <div class="home-currency-section">
-    <div class="home-currency-label">🏠 나의 국가 통화</div>
-    <div style="font-size: 11px; color: #999; margin-bottom: 8px;">여행을 가기 전 사용하던 본국 통화입니다</div>
-    <select id="homeCurrency" class="home-currency-select">
-      <option value="USD">USD 🇺🇸</option>
-      <option value="KRW" selected>KRW 🇰🇷</option>
-      <option value="EUR">EUR 🇪🇺</option>
-      <option value="JPY">JPY 🇯🇵</option>
-      <option value="GBP">GBP 🇬🇧</option>
-      <option value="CNY">CNY 🇨🇳</option>
-      <option value="AUD">AUD 🇦🇺</option>
-      <option value="CAD">CAD 🇨🇦</option>
-      <option value="CHF">CHF 🇨🇭</option>
-      <option value="SEK">SEK 🇸🇪</option>
-      <option value="MXN">MXN 🇲🇽</option>
-      <option value="SGD">SGD 🇸🇬</option>
-      <option value="HKD">HKD 🇭🇰</option>
-      <option value="NZD">NZD 🇳🇿</option>
-    </select>
-  </div>
-
-  <div class="converter-section">
-    <div class="input-group">
-      <label for="fromAmount">현지 금액</label>
-      <div class="input-wrapper">
-        <input type="text" id="fromAmount" class="amount-input" placeholder="금액 입력" value="1">
-          <select id="fromCurrency">
+    <!-- Converter Section -->
+    <div class="bg-gray-50 rounded-xl p-5 sm:p-6 md:p-7 mb-5 sm:mb-6">
+      <!-- From Amount -->
+      <div class="mb-5 sm:mb-6">
+        <label for="fromAmount" class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">현지 금액</label>
+        <div class="flex gap-2 sm:gap-3">
+          <input type="text" id="fromAmount" class="amount-input flex-1 px-3 sm:px-4 py-3 sm:py-3.5 text-base sm:text-lg border-2 border-gray-300 rounded-lg text-right focus:outline-none focus:border-indigo-500 transition-colors" placeholder="금액 입력" value="1">
+          <select id="fromCurrency" class="px-3 sm:px-4 py-3 sm:py-3.5 text-base sm:text-lg border-2 border-gray-300 rounded-lg font-semibold text-gray-800 bg-white cursor-pointer focus:outline-none focus:border-indigo-500 transition-colors min-w-[100px] sm:min-w-[120px]">
             <option value="USD">USD 🇺🇸</option>
             <option value="KRW">KRW 🇰🇷</option>
             <option value="EUR">EUR 🇪🇺</option>
@@ -82,18 +155,20 @@
             <option value="HKD">HKD 🇭🇰</option>
             <option value="NZD">NZD 🇳🇿</option>
           </select>
+        </div>
       </div>
-    </div>
 
-    <div style="text-align: center; margin: 20px 0;">
-      <button class="swap-btn" id="swapBtn" title="통화 교환">🔄</button>
-    </div>
+      <!-- Swap Button -->
+      <div class="text-center my-5 sm:my-6">
+        <button class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-xl sm:text-2xl flex items-center justify-center hover:shadow-lg transition-all active:scale-95" id="swapBtn" title="통화 교환">🔄</button>
+      </div>
 
-    <div class="input-group">
-      <label for="toCurrency">내 국가 금액 (환산 결과)</label>
-      <div class="input-wrapper">
-        <input type="text" id="convertedAmount" class="amount-input" placeholder="환산 결과" readonly style="background-color: #f5f5f5; color: #333; font-weight: 600;">
-          <select id="toCurrency">
+      <!-- To Amount -->
+      <div>
+        <label for="convertedAmount" class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">내 국가 금액 (환산 결과)</label>
+        <div class="flex gap-2 sm:gap-3">
+          <input type="text" id="convertedAmount" class="amount-input flex-1 px-3 sm:px-4 py-3 sm:py-3.5 text-base sm:text-lg border-2 border-gray-300 rounded-lg text-right bg-gray-200 text-gray-700 font-semibold focus:outline-none focus:border-indigo-500 transition-colors" placeholder="환산 결과" readonly>
+          <select id="toCurrency" class="px-3 sm:px-4 py-3 sm:py-3.5 text-base sm:text-lg border-2 border-gray-300 rounded-lg font-semibold text-gray-800 bg-white cursor-pointer focus:outline-none focus:border-indigo-500 transition-colors min-w-[100px] sm:min-w-[120px]">
             <option value="KRW">KRW 🇰🇷</option>
             <option value="USD">USD 🇺🇸</option>
             <option value="EUR">EUR 🇪🇺</option>
@@ -109,67 +184,50 @@
             <option value="HKD">HKD 🇭🇰</option>
             <option value="NZD">NZD 🇳🇿</option>
           </select>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="result-section">
-    <p id="resultLabel">변환 결과</p>
-    <div class="result-amount" id="resultAmount">
-      <span class="loading"></span>
-    </div>
-    <div class="exchange-rate-info" id="exchangeRateInfo">
-      환율을 불러오는 중...
-    </div>
-
-    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.3);">
-      <div style="margin-bottom: 10px;">
-        <input type="text" id="saveTitle" placeholder="예) 런던 쇼핑, 도쿄 식당 등..." maxlength="20" style="
-                        width: 100%;
-                        padding: 10px 12px;
-                        border: 1px solid rgba(255, 255, 255, 0.3);
-                        border-radius: 6px;
-                        background: rgba(255, 255, 255, 0.1);
-                        color: white;
-                        font-size: 13px;
-                        box-sizing: border-box;
-                    " />
+    <!-- Result Section -->
+    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-xl p-6 sm:p-8 md:p-10 mb-5 sm:mb-6 text-center">
+      <p id="resultLabel" class="text-sm sm:text-base opacity-90 mb-3 sm:mb-4">변환 결과</p>
+      <div class="result-amount text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4" id="resultAmount">
+        <span class="loading"></span>
       </div>
-      <button id="saveBtn" style="
-                    width: 100%;
-                    padding: 10px 15px;
-                    background: rgba(255, 255, 255, 0.2);
-                    color: white;
-                    border: 1px solid rgba(255, 255, 255, 0.3);
-                    border-radius: 6px;
-                    font-size: 14px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: background 0.3s;
-                ">💾 이 환율 저장하기</button>
+      <div class="exchange-rate-info text-xs sm:text-sm opacity-80 pt-4 sm:pt-5 border-t border-white/30" id="exchangeRateInfo">
+        환율을 불러오는 중...
+      </div>
+
+      <!-- Save Section -->
+      <div class="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-white/30">
+        <div class="mb-3">
+          <input type="text" id="saveTitle" placeholder="예) 런던 쇼핑, 도쿄 식당 등..." maxlength="20" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-white/30 rounded-lg bg-white/10 text-white placeholder-white/50 text-xs sm:text-sm focus:outline-none focus:border-white/50 transition-colors">
+        </div>
+        <button id="saveBtn" class="w-full px-4 sm:px-5 py-3 sm:py-3.5 bg-white/20 text-white border border-white/30 rounded-lg text-sm sm:text-base font-semibold hover:bg-white/30 transition-colors">💾 이 환율 저장하기</button>
+      </div>
+    </div>
+
+    <!-- History Section -->
+    <div class="mt-6 sm:mt-8">
+      <h3 class="text-base sm:text-lg text-gray-800 font-semibold mb-4 flex items-center gap-2">
+        <span class="status-indicator"></span>
+        최근 변환 내역
+      </h3>
+      <div class="history-list max-h-60 sm:max-h-72 md:max-h-80 overflow-y-auto" id="historyList">
+        <div class="text-center text-gray-400 py-5 sm:py-6 text-xs sm:text-sm">변환 내역이 없습니다</div>
+      </div>
+      <button class="clear-history-btn w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-200 text-gray-700 rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-300 transition-colors mt-3" id="clearHistoryBtn" style="display: none;">
+        히스토리 초기화
+      </button>
     </div>
   </div>
 
-  <div class="history-section">
-    <h3>
-      <span class="status-indicator"></span>
-      최근 변환 내역
-    </h3>
-    <div class="history-list" id="historyList">
-      <div class="empty-history">변환 내역이 없습니다</div>
-    </div>
-    <button class="clear-history-btn" id="clearHistoryBtn" style="display: none;">
-      히스토리 초기화
-    </button>
-  </div>
-</div>
-
-<script src="js/config.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/api.js"></script>
-<script src="js/location.js"></script>
-<script src="js/converter.js"></script>
-<script src="js/history.js"></script>
-<script src="js/main.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/location.js"></script>
+  <script src="js/converter.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

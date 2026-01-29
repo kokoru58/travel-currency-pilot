@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>여행자 환율 계산기</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>💱 여행자 환율 계산기</h1>
+    <p>현위치의 통화와 내 국가 통화를 자동으로 비교하세요</p>
+  </div>
+
+  <div id="errorMessage" class="error-message" style="display: none;"></div>
+  <div id="warningMessage" class="warning-message" style="display: none;"></div>
+
+  <!-- 위치 섹션 -->
+  <div class="location-section">
+    <div class="location-header">
+      <div class="location-title">
+        📍 현재 위치
+      </div>
+      <div class="location-controls">
+        <button class="location-btn" id="updateLocationBtn" title="위치 업데이트">새로고침</button>
+        <button class="location-btn" id="autoLocationBtn" title="자동 갱신 토글">자동</button>
+      </div>
+    </div>
+    <div id="locationInfo" class="location-info">
+      <div class="location-card">
+        <div class="location-card-label">위치</div>
+        <div class="location-card-value" id="locationName">위치 감지 중...</div>
+      </div>
+      <div class="location-card">
+        <div class="location-card-label">현지 통화</div>
+        <div class="location-card-value" id="localCurrency">-</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 기본 통화 섹션 -->
+  <div class="home-currency-section">
+    <div class="home-currency-label">🏠 나의 국가 통화</div>
+    <div style="font-size: 11px; color: #999; margin-bottom: 8px;">여행을 가기 전 사용하던 본국 통화입니다</div>
+    <select id="homeCurrency" class="home-currency-select">
+      <option value="USD">USD 🇺🇸</option>
+      <option value="KRW" selected>KRW 🇰🇷</option>
+      <option value="EUR">EUR 🇪🇺</option>
+      <option value="JPY">JPY 🇯🇵</option>
+      <option value="GBP">GBP 🇬🇧</option>
+      <option value="CNY">CNY 🇨🇳</option>
+      <option value="AUD">AUD 🇦🇺</option>
+      <option value="CAD">CAD 🇨🇦</option>
+      <option value="CHF">CHF 🇨🇭</option>
+      <option value="SEK">SEK 🇸🇪</option>
+      <option value="MXN">MXN 🇲🇽</option>
+      <option value="SGD">SGD 🇸🇬</option>
+      <option value="HKD">HKD 🇭🇰</option>
+      <option value="NZD">NZD 🇳🇿</option>
+    </select>
+  </div>
+
+  <div class="converter-section">
+    <div class="input-group">
+      <label for="fromAmount">현지 금액</label>
+      <div class="input-wrapper">
+        <input type="text" id="fromAmount" class="amount-input" placeholder="금액 입력" value="1">
+          <select id="fromCurrency">
+            <option value="USD">USD 🇺🇸</option>
+            <option value="KRW">KRW 🇰🇷</option>
+            <option value="EUR">EUR 🇪🇺</option>
+            <option value="JPY">JPY 🇯🇵</option>
+            <option value="GBP">GBP 🇬🇧</option>
+            <option value="CNY">CNY 🇨🇳</option>
+            <option value="AUD">AUD 🇦🇺</option>
+            <option value="CAD">CAD 🇨🇦</option>
+            <option value="CHF">CHF 🇨🇭</option>
+            <option value="SEK">SEK 🇸🇪</option>
+            <option value="MXN">MXN 🇲🇽</option>
+            <option value="SGD">SGD 🇸🇬</option>
+            <option value="HKD">HKD 🇭🇰</option>
+            <option value="NZD">NZD 🇳🇿</option>
+          </select>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin: 20px 0;">
+      <button class="swap-btn" id="swapBtn" title="통화 교환">🔄</button>
+    </div>
+
+    <div class="input-group">
+      <label for="toCurrency">내 국가 금액 (환산 결과)</label>
+      <div class="input-wrapper">
+        <input type="text" id="convertedAmount" class="amount-input" placeholder="환산 결과" readonly style="background-color: #f5f5f5; color: #333; font-weight: 600;">
+          <select id="toCurrency">
+            <option value="KRW">KRW 🇰🇷</option>
+            <option value="USD">USD 🇺🇸</option>
+            <option value="EUR">EUR 🇪🇺</option>
+            <option value="JPY">JPY 🇯🇵</option>
+            <option value="GBP">GBP 🇬🇧</option>
+            <option value="CNY">CNY 🇨🇳</option>
+            <option value="AUD">AUD 🇦🇺</option>
+            <option value="CAD">CAD 🇨🇦</option>
+            <option value="CHF">CHF 🇨🇭</option>
+            <option value="SEK">SEK 🇸🇪</option>
+            <option value="MXN">MXN 🇲🇽</option>
+            <option value="SGD">SGD 🇸🇬</option>
+            <option value="HKD">HKD 🇭🇰</option>
+            <option value="NZD">NZD 🇳🇿</option>
+          </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-section">
+    <p id="resultLabel">변환 결과</p>
+    <div class="result-amount" id="resultAmount">
+      <span class="loading"></span>
+    </div>
+    <div class="exchange-rate-info" id="exchangeRateInfo">
+      환율을 불러오는 중...
+    </div>
+
+    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.3);">
+      <div style="margin-bottom: 10px;">
+        <input type="text" id="saveTitle" placeholder="예) 런던 쇼핑, 도쿄 식당 등..." maxlength="20" style="
+                        width: 100%;
+                        padding: 10px 12px;
+                        border: 1px solid rgba(255, 255, 255, 0.3);
+                        border-radius: 6px;
+                        background: rgba(255, 255, 255, 0.1);
+                        color: white;
+                        font-size: 13px;
+                        box-sizing: border-box;
+                    " />
+      </div>
+      <button id="saveBtn" style="
+                    width: 100%;
+                    padding: 10px 15px;
+                    background: rgba(255, 255, 255, 0.2);
+                    color: white;
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    border-radius: 6px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: background 0.3s;
+                ">💾 이 환율 저장하기</button>
+    </div>
+  </div>
+
+  <div class="history-section">
+    <h3>
+      <span class="status-indicator"></span>
+      최근 변환 내역
+    </h3>
+    <div class="history-list" id="historyList">
+      <div class="empty-history">변환 내역이 없습니다</div>
+    </div>
+    <button class="clear-history-btn" id="clearHistoryBtn" style="display: none;">
+      히스토리 초기화
+    </button>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/api.js"></script>
+<script src="js/location.js"></script>
+<script src="js/converter.js"></script>
+<script src="js/history.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

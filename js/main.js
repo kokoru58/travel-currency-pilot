@@ -75,7 +75,7 @@ window.addEventListener('load', async () => {
   renderHistory();
   updateLocation(); // 초기 위치 감지 (fromCurrency를 현지 통화로 설정)
   convertCurrency();
-  saveTitleInput.placeholder = `예) 런던 쇼핑, 도쿄 식당 등...`;
+  saveTitleInput.placeholder = `항목을 입력하세요`;
 });
 
 // ===== 언로드 시 정리 =====

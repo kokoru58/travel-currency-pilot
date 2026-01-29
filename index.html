@@ -67,11 +67,28 @@
     }
 
     .location-btn {
-      @apply bg-white/20 text-white border border-white/30 px-3 py-1 text-xs sm:text-sm rounded transition-colors hover:bg-white/30 active:bg-white/40;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 4px 12px;
+      font-size: 12px;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+      cursor: pointer;
+    }
+
+    @media (min-width: 640px) {
+      .location-btn {
+        font-size: 14px;
+      }
+    }
+
+    .location-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .location-btn.active {
-      @apply bg-white/40;
+      background: rgba(255, 255, 255, 0.4);
     }
   </style>
 </head>
@@ -133,13 +150,13 @@
     </div>
 
     <!-- Converter Section -->
-    <div class="bg-gray-50 rounded-xl p-5 sm:p-6 md:p-7 mb-5 sm:mb-6">
+    <div class="bg-gray-50 rounded-xl p-3 sm:p-6 md:p-7 mb-5 sm:mb-6">
       <!-- From Amount -->
-      <div class="mb-5 sm:mb-6">
+      <div class="mb-4 sm:mb-4">
         <label for="fromAmount" class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">현지 금액</label>
-        <div class="flex gap-2 sm:gap-3">
-          <input type="text" id="fromAmount" class="amount-input flex-1 px-3 sm:px-4 py-3 sm:py-3.5 text-base sm:text-lg border-2 border-gray-300 rounded-lg text-right focus:outline-none focus:border-indigo-500 transition-colors" placeholder="금액 입력" value="1">
-          <select id="fromCurrency" class="px-3 sm:px-4 py-3 sm:py-3.5 text-base sm:text-lg border-2 border-gray-300 rounded-lg font-semibold text-gray-800 bg-white cursor-pointer focus:outline-none focus:border-indigo-500 transition-colors min-w-[100px] sm:min-w-[120px]">
+        <div class="flex gap-0.5 sm:gap-3">
+          <input type="text" id="fromAmount" class="amount-input flex-1 px-1.5 sm:px-4 py-3 sm:py-3.5 text-sm sm:text-lg border-2 border-gray-300 rounded-lg text-right font-mono focus:outline-none focus:border-indigo-500 transition-colors h-11 sm:h-12" placeholder="금액 입력" value="1">
+          <select id="fromCurrency" class="px-1 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-lg border-2 border-gray-300 rounded-lg font-semibold text-gray-800 bg-white cursor-pointer focus:outline-none focus:border-indigo-500 transition-colors min-w-[45px] sm:min-w-[100px] flex-shrink-0 h-11 sm:h-12">
             <option value="USD">USD 🇺🇸</option>
             <option value="KRW">KRW 🇰🇷</option>
             <option value="EUR">EUR 🇪🇺</option>
@@ -159,16 +176,16 @@
       </div>
 
       <!-- Swap Button -->
-      <div class="text-center my-5 sm:my-6">
-        <button class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-xl sm:text-2xl flex items-center justify-center hover:shadow-lg transition-all active:scale-95" id="swapBtn" title="통화 교환">🔄</button>
+      <div class="flex justify-center my-2 sm:my-3">
+        <button class="w-full sm:w-auto px-4 py-3 sm:px-8 sm:py-4 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-2xl flex items-center justify-center hover:shadow-lg transition-all active:scale-95" id="swapBtn" title="통화 교환">↔️</button>
       </div>
 
       <!-- To Amount -->
       <div>
         <label for="convertedAmount" class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">내 국가 금액 (환산 결과)</label>
-        <div class="flex gap-2 sm:gap-3">
-          <input type="text" id="convertedAmount" class="amount-input flex-1 px-3 sm:px-4 py-3 sm:py-3.5 text-base sm:text-lg border-2 border-gray-300 rounded-lg text-right bg-gray-200 text-gray-700 font-semibold focus:outline-none focus:border-indigo-500 transition-colors" placeholder="환산 결과" readonly>
-          <select id="toCurrency" class="px-3 sm:px-4 py-3 sm:py-3.5 text-base sm:text-lg border-2 border-gray-300 rounded-lg font-semibold text-gray-800 bg-white cursor-pointer focus:outline-none focus:border-indigo-500 transition-colors min-w-[100px] sm:min-w-[120px]">
+        <div class="flex gap-0.5 sm:gap-3">
+          <input type="text" id="convertedAmount" class="amount-input flex-1 px-1.5 sm:px-4 py-3 sm:py-3.5 text-sm sm:text-lg border-2 border-gray-300 rounded-lg text-right font-mono bg-gray-100 text-gray-700 font-semibold focus:outline-none focus:border-indigo-500 transition-colors h-11 sm:h-12" placeholder="환산 결과" readonly>
+          <select id="toCurrency" class="px-1 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-lg border-2 border-gray-300 rounded-lg font-semibold text-gray-800 bg-white cursor-pointer focus:outline-none focus:border-indigo-500 transition-colors min-w-[45px] sm:min-w-[100px] flex-shrink-0 h-11 sm:h-12">
             <option value="KRW">KRW 🇰🇷</option>
             <option value="USD">USD 🇺🇸</option>
             <option value="EUR">EUR 🇪🇺</option>
@@ -201,7 +218,7 @@
       <!-- Save Section -->
       <div class="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-white/30">
         <div class="mb-3">
-          <input type="text" id="saveTitle" placeholder="예) 런던 쇼핑, 도쿄 식당 등..." maxlength="20" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-white/30 rounded-lg bg-white/10 text-white placeholder-white/50 text-xs sm:text-sm focus:outline-none focus:border-white/50 transition-colors">
+          <input type="text" id="saveTitle" placeholder="항목을 입력하세요" maxlength="20" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-white/30 rounded-lg bg-white/10 text-white placeholder-white/50 text-xs sm:text-sm focus:outline-none focus:border-white/50 transition-colors">
         </div>
         <button id="saveBtn" class="w-full px-4 sm:px-5 py-3 sm:py-3.5 bg-white/20 text-white border border-white/30 rounded-lg text-sm sm:text-base font-semibold hover:bg-white/30 transition-colors">💾 이 환율 저장하기</button>
       </div>

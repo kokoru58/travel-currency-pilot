@@ -97,9 +97,6 @@ async function convertCurrency() {
     rate: exchangeRate,
     timestamp: new Date()
   };
-
-  // 저장 입력 필드 초기화
-  saveTitleInput.value = `${fromCurrency} → ${toCurrency}`;
 }
 
 /**
@@ -107,7 +104,7 @@ async function convertCurrency() {
  */
 function updateExchangeRateInfo(fromCurrency, toCurrency, rate) {
   const inverseRate = (1 / rate).toFixed(6);
-  exchangeRateInfo.textContent = `1 ${fromCurrency} = ${rate.toFixed(6)} ${toCurrency} | 1 ${toCurrency} = ${inverseRate} ${fromCurrency}`;
+  exchangeRateInfo.innerHTML = `1 ${fromCurrency} = ${rate.toFixed(6)} ${toCurrency}<br/>1 ${toCurrency} = ${inverseRate} ${fromCurrency}`;
 }
 
 /**

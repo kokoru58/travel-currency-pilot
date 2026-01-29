@@ -104,7 +104,10 @@ async function convertCurrency() {
  */
 function updateExchangeRateInfo(fromCurrency, toCurrency, rate) {
   const inverseRate = (1 / rate).toFixed(6);
-  exchangeRateInfo.innerHTML = `1 ${fromCurrency} = ${rate.toFixed(6)} ${toCurrency}<br/>1 ${toCurrency} = ${inverseRate} ${fromCurrency}`;
+  exchangeRateInfo.innerHTML = `
+    <div style="margin-bottom: 8px;">1 ${fromCurrency} = ${rate.toFixed(6)} ${toCurrency}</div>
+    <div>1 ${toCurrency} = ${inverseRate} ${fromCurrency}</div>
+  `;
 }
 
 /**
